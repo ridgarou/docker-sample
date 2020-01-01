@@ -14,5 +14,4 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag $ImageName
-      - name: Push the Docker image
-        run: docker push $ImageName
+             docker push $ImageName
