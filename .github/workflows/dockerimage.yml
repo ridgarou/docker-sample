@@ -15,4 +15,4 @@ jobs:
           docker build . --file Dockerfile --tag ${ImageName}
           docker push ${ImageName}
         env:
-          ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample:$(date +%s)
+          ImageName: "docker.pkg.github.com/ridgarou/docker-sample/docker-sample:$(date +%s)"
