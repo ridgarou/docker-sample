@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/docker/login@master
+        with: # Set the secret as an input
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWPORD: ${{ secrets.DOCKER_PASSWPORD }}
       - name: Build the Docker image
         run: |
           flag=$(date +%s)
           echo ${ImageName}:${flag}
-          docker login docker.pkg.github.com --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
           docker build . --file Dockerfile --tag ${ImageName}:${flag}
           docker push ${ImageName}:${flag}
         env:
-          DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_DOCKER_PASSWORD }}
           ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
