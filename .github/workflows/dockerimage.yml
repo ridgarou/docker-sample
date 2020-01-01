@@ -14,7 +14,7 @@ jobs:
         run: |
           flag=$(date +%s)
           echo ${ImageName}:${flag}
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.pkg.github.com -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.GITHUB_DOCKER_PASSWORD }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_DOCKER_USERNAME }}" --password-stdin
           docker build . --file Dockerfile --tag ${ImageName}:${flag}
           docker push ${ImageName}:${flag}
         env:
