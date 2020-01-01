@@ -13,7 +13,8 @@ jobs:
       - name: Build the Docker image
         run: |
           echo ${ImageName}
-          docker build . --file Dockerfile --tag ${ImageName}
-          docker push ${ImageName}
+          docker build . --file Dockerfile --tag ${ImageName}:${Tag}
+          docker push ${ImageName}:${Tag}
         env:
-          ImageName: $("docker.pkg.github.com/ridgarou/docker-sample/docker-sample:$(date +%s)")
+          ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
+          Tag: $(date +%s)
