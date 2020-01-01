@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build the Docker image
         run: |
-          echo ${ImageName}
+          echo ${ImageName}:${Tag}
           docker build . --file Dockerfile --tag ${ImageName}:${Tag}
           docker push ${ImageName}:${Tag}
         env:
