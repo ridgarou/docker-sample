@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build the Docker image
         run: |
-          echo ${ImageName}:${Tag}
-          docker build . --file Dockerfile --tag ${ImageName}:${Tag}
-          docker push ${ImageName}:${Tag}
+          echo "${ImageName}:${Flag}"
+          docker build . --file Dockerfile --tag "${ImageName}:${Flag}"
+          docker push "${ImageName}:${Flag}"
         env:
           ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
-          Tag: $(date +%s)
+          Flag: $(date +%s)
