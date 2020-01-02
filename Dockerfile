@@ -1,5 +1,6 @@
 # FROM ayufan/rock64-dockerfiles:arm32
-FROM arm64v8/debian:stretch
+# FROM arm64v8/debian:stretch
+FROM arm64v8/alpine:latest
 
 # set version label
 ARG BUILD_DATE
