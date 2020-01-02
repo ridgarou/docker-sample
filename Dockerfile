@@ -7,17 +7,19 @@ ARG CALIBRE_RELEASE
 LABEL build_version="Ridgarou version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="ridgarou"
 
-RUN echo "**** Update image ****" &&  \
-    apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y
+RUN echo "**** Update image ****"
+RUN apt-get update -y 
+RUN apt-get upgrade -y 
+RUN apt-get dist-upgrade -y
     
-RUN echo "**** Install runtime packages ****" &&  \
-    apt-get install -y xvfb ImageMagick rsyslog
+RUN echo "**** Install runtime packages ****"
+RUN apt-get install -y xvfb ImageMagick rsyslog
     
-RUN echo "**** Install calibre from debian repositories ****" &&  \
-    apt-get install -y calibre
+RUN echo "**** Install calibre from debian repositories ****"
+RUN apt-get install -y calibre
 
-RUN echo "**** Clean innecesary packages ****" &&  \
-    apt-get clean
+RUN echo "**** Clean innecesary packages ****"
+RUN apt-get clean
     
 EXPOSE 8080
 
