@@ -9,7 +9,7 @@ LABEL maintainer="ridgarou"
 
 SHELL ["/bin/bash", "-c"]
 
-RUN echo "**** Update image ****"
+# RUN echo "**** Update image ****"
 RUN apt-get update -y 
 RUN apt-get upgrade -y 
 RUN apt-get dist-upgrade -y
