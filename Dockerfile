@@ -1,4 +1,4 @@
-FROM ubuntu:17.10
+FROM ayufan/rock64-dockerfiles:arm64
 MAINTAINER santi@regueiro.es
 
 RUN apt-get update -y \
