@@ -1,4 +1,4 @@
-FROM ayufan/rock64-dockerfiles:arm64
+FROM ayufan/rock64-dockerfiles:arm32
 
 # set version label
 ARG BUILD_DATE
