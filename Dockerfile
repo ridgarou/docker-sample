@@ -1,17 +1,18 @@
+FROM ayufan/rock64-dockerfiles:arm64
 # FROM ayufan/rock64-dockerfiles:arm32
 # FROM arm64v8/debian:stretch
-FROM arm64v8/alpine:latest
+# FROM arm64v8/alpine:latest
 
 # set version label
-ARG BUILD_DATE
-ARG VERSION
-ARG CALIBRE_RELEASE
-LABEL build_version="Ridgarou version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="ridgarou"
+# ARG BUILD_DATE
+# ARG VERSION
+# ARG CALIBRE_RELEASE
+# LABEL build_version="Ridgarou version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+# LABEL maintainer="ridgarou"
 
 # SHELL ["/bin/bash", "-c"]
 
-# RUN echo "**** Update image ****"
+RUN echo "**** Update image ****"
 RUN apt-get update -y 
 RUN apt-get upgrade -y 
 RUN apt-get dist-upgrade -y
