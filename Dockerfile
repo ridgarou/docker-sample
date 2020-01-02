@@ -7,6 +7,8 @@ ARG CALIBRE_RELEASE
 LABEL build_version="Ridgarou version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="ridgarou"
 
+SHELL ["/bin/bash", "-c"]
+
 RUN echo "**** Update image ****"
 RUN apt-get update -y 
 RUN apt-get upgrade -y 
