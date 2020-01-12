@@ -22,30 +22,25 @@ jobs:
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
       - name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      - name: Build and publish image
-        uses: ilteoood/docker_buildx@master
-        with:
-          publish: true
-          imageName: ${ImageName}
-          tag: ${flag}
-          platform: linux/arm64
-          dockerHubUser: ${{ secrets.GITHUB_USERNAME }}
-          dockerHubPassword: ${{ secrets.GITHUB_TOKEN }}
-      #- name: Buildx the Docker image
-      #  run: |
-      #    flag=$(date +%s)
-      #    echo "*** Imagen a crear ${ImageName}:${flag}"
-      #    echo "*** Login en docker.pkg.github.com"
-      #    echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_USERNAME }}" --password-stdin
-      #    #echo "*** Limpiamos la cache"
-      #    #docker builder prune -af
-      #    echo "*** Construimos la imagen"
-      #    docker buildx build . \
-      #      --platform linux/arm64 \
-      #      --file Dockerfile \
-      #      --tag "${ImageName}:${flag}"
-      #    echo "*** Publicamos la imagen"
-      #    docker push "${ImageName}:${flag}"
+        run: echo ${{ steps.buildx.outputs.platforms }}        
+      - name: Buildx the Docker image
+        run: |
+          flag=$(date +%s)
+          echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}"
+          echo "*** Login en ${DOCKER_REGISTRY_URL}"
+          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
+          #echo "*** Limpiamos la cache"
+          #docker builder prune -af
+          echo "*** Construimos la imagen"
+          docker buildx build . \
+            --platform linux/arm64 \
+            --file Dockerfile \
+            --tag ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
+          echo "*** Publicamos la imagen"
+          docker push ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
         env:
           ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_REGISTRY_URL: docker.pkg.github.com
+          DOCKER_IMAGE_NAME: /ridgarou/docker-sample/docker-sample
