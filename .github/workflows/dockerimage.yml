@@ -22,11 +22,10 @@ jobs:
           echo "*** Imagen a crear ${ImageName}:${flag}"
           echo "*** Login en docker.pkg.github.com"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_USERNAME }}" --password-stdin
-          echo "*** Limpiamos la cache"
-          docker builder prune -af
+          #echo "*** Limpiamos la cache"
+          #docker builder prune -af
           echo "*** Construimos la imagen"
-          docker buildx build \
-            --pull --no-cache \
+          docker buildx build \ #--pull --no-cache \
             --platform linux/arm64 \
             --output "type=image,push=false" \
             --file Dockerfile \
