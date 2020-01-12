@@ -34,7 +34,7 @@ jobs:
           echo "*** Construimos la imagen"
           docker buildx build . \
             --platform linux/arm64 \
-            --output type=registry \
+            --output type=image,push=true \
             --file Dockerfile \
             --tag "${ImageName}:${flag}"
           #echo "*** Publicamos la imagen"
