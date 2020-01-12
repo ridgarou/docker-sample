@@ -15,7 +15,7 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           # A directory to store and save the cache
-          path: ~/.docker-sample-cache
+          path: ${{ github.workspace }}/.docker-sample-cache
           # An explicit key for restoring and saving the cache
           key: ${{ runner.os }}-sample-cache
       - name: Set up Docker Buildx
@@ -35,7 +35,9 @@ jobs:
           docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
+            --output "type=image,push=false" \
             --tag ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
+          docker image ls
           echo "*** Publicamos la imagen"
           docker push ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
         env:
