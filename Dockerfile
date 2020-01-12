@@ -28,13 +28,14 @@ EXPOSE 8080
 
 # Create directory for library and directory to import files
 RUN mkdir -p /opt/calibre/library && \
-    mkdir -p /opt/calibre/import
+    mkdir -p /opt/calibre/import && \
+    mkdir -p /etc/cron.d
     
 VOLUME ["/opt/calibre/library"]
 VOLUME ["/opt/calibre/import"]
 
 # Add crontab job to import books in the library
-ADD ./files/crontab /etc/cron.d/calibre-update skipcache
+ADD ./files/crontab /etc/cron.d/calibre-update
 RUN chmod 0644 /etc/cron.d/calibre-update
 
 RUN touch /var/log/cron.log
