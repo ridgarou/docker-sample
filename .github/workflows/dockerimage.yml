@@ -21,8 +21,9 @@ jobs:
           flag=$(date +%s)
           echo "${ImageName}:${flag}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_USERNAME }}" --password-stdin
+          docker builder prune -af
           docker buildx build . \
-            --no-cache \
+            --pull --no-cache \
             --platform linux/arm64 \
             --output "type=image,push=false" \
             --file Dockerfile \
