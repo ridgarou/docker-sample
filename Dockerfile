@@ -14,8 +14,6 @@ FROM ayufan/rock64-dockerfiles:arm64
 # SHELL ["/bin/bash", "-c"]
 
 RUN echo "**** Update image ****" && \
-add-apt-repository main && \
-add-apt-repository universe && \
 apt-get update -y && \
 apt-get upgrade -y && \
 apt-get dist-upgrade -y && \
