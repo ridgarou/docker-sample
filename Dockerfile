@@ -34,7 +34,7 @@ VOLUME ["/opt/calibre/library"]
 VOLUME ["/opt/calibre/import"]
 
 # Add crontab job to import books in the library
-ADD crontab /etc/cron.d/calibre-update
+ADD crontab /etc/cron.d/calibre-update skipcache
 RUN chmod 0644 /etc/cron.d/calibre-update
 
 RUN touch /var/log/cron.log
