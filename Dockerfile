@@ -13,28 +13,24 @@ FROM ayufan/rock64-dockerfiles:arm64
 
 # SHELL ["/bin/bash", "-c"]
 
-RUN echo "**** Update image ****"
-RUN apt-get update -y 
-RUN apt-get upgrade -y 
-RUN apt-get dist-upgrade -y
-    
-RUN echo "**** Install runtime packages ****"
-RUN apt-get install -y xvfb ImageMagick rsyslog cron
-    
-RUN echo "**** Install calibre from debian repositories ****"
-RUN apt-get install -y calibre
-
-RUN echo "**** Clean innecesary packages ****"
-RUN apt-get clean
+RUN echo "**** Update image ****" && \
+    apt-get update -y  && \
+    apt-get upgrade -y && \
+    apt-get dist-upgrade -y && \
+    echo "**** Install runtime packages ****" && \
+    apt-get install -y xvfb ImageMagick rsyslog cron && \
+    echo "**** Install calibre from debian repositories ****" && \
+    apt-get install -y calibre && \
+    echo "**** Clean innecesary packages ****" && \
+    apt-get clean
     
 EXPOSE 8080
 
-# Create directory for library
-RUN mkdir -p /opt/calibre/library
+# Create directory for library and directory to import files
+RUN mkdir -p /opt/calibre/library && \
+    mkdir -p /opt/calibre/import
+    
 VOLUME ["/opt/calibre/library"]
-
-# Create directory to import files
-RUN mkdir -p /opt/calibre/import
 VOLUME ["/opt/calibre/import"]
 
 # Add crontab job to import books in the library
