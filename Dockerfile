@@ -14,15 +14,17 @@ FROM ayufan/rock64-dockerfiles:arm64
 # SHELL ["/bin/bash", "-c"]
 
 RUN echo "**** Update image ****" && \
-    apt-get update -y  && \
-    apt-get upgrade -y && \
-    apt-get dist-upgrade -y && \
-    echo "**** Install runtime packages ****" && \
-    apt-get install -y xvfb ImageMagick rsyslog cron && \
-    echo "**** Install calibre from debian repositories ****" && \
-    apt-get install -y calibre && \
-    echo "**** Clean innecesary packages ****" && \
-    apt-get clean
+add-apt-repository main && \
+add-apt-repository universe && \
+apt-get update -y && \
+apt-get upgrade -y && \
+apt-get dist-upgrade -y && \
+echo "**** Install runtime packages ****" && \
+apt-get install -y xvfb ImageMagick rsyslog cron && \
+echo "**** Install calibre from debian repositories ****" && \
+apt-get install -y calibre && \
+echo "**** Clean innecesary packages ****" && \
+apt-get clean
     
 EXPOSE 8080
 
