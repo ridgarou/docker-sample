@@ -27,10 +27,10 @@ jobs:
           echo "*** Construimos la imagen"
           docker buildx build . \
             --platform linux/arm64 \
-            --output "type=image,push=false" \
+            --push \
             --file Dockerfile \
             --tag "${ImageName}:${flag}"
-          echo "*** Publicamos la imagen"
-          docker push "${ImageName}:${flag}"
+          #echo "*** Publicamos la imagen"
+          #docker push "${ImageName}:${flag}"
         env:
           ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
