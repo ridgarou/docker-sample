@@ -14,6 +14,12 @@ MAINTAINER ridgarou@gmail.com
 
 # SHELL ["/bin/bash", "-c"]
 
+# ADD ./files/install_tzdata.sh /install_tzdata.sh
+# RUN chmod +x /install_tzdata.sh
+
+ENV TZ=Europe/Madrid
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN echo "**** Update image ****" && \
 apt-get update -y && \
 echo "**** Install runtime packages ****" && \
