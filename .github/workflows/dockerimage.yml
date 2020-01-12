@@ -25,12 +25,13 @@ jobs:
           echo "*** Limpiamos la cache"
           docker builder prune -af
           echo "*** Construimos la imagen"
-          docker buildx build . \
+          docker buildx build \
             --pull --no-cache \
             --platform linux/arm64 \
             --output "type=image,push=false" \
             --file Dockerfile \
-            --tag "${ImageName}:${flag}"
+            --tag "${ImageName}:${flag}" \
+            .
           echo "*** Publicamos la imagen"
           docker push "${ImageName}:${flag}"
         env:
