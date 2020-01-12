@@ -9,20 +9,20 @@ FROM ayufan/rock64-dockerfiles:arm64
 # ARG VERSION
 # ARG CALIBRE_RELEASE
 # LABEL build_version="Ridgarou version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-# LABEL maintainer="ridgarou"
+LABEL maintainer="ridgarou"
+MAINTAINER ridgarou@gmail.com
 
 # SHELL ["/bin/bash", "-c"]
 
 RUN echo "**** Update image ****" && \
 apt-get update -y && \
-apt-get upgrade -y && \
-apt-get dist-upgrade -y && \
 echo "**** Install runtime packages ****" && \
-apt-get install -y xvfb imagemagick rsyslog cron && \
+apt-get -y install --no-install-recommends -y xvfb imagemagick rsyslog cron && \
 echo "**** Install calibre from debian repositories ****" && \
-apt-get install -y calibre && \
+apt-get -y install --no-install-recommends calibre && \
 echo "**** Clean innecesary packages ****" && \
-apt-get clean
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
     
 EXPOSE 8080
 
