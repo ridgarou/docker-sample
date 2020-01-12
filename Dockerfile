@@ -19,7 +19,7 @@ RUN apt-get upgrade -y
 RUN apt-get dist-upgrade -y
     
 RUN echo "**** Install runtime packages ****"
-RUN apt-get install -y xvfb ImageMagick rsyslog
+RUN apt-get install -y xvfb ImageMagick rsyslog cron
     
 RUN echo "**** Install calibre from debian repositories ****"
 RUN apt-get install -y calibre
