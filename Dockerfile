@@ -1,7 +1,7 @@
-# FROM ayufan/rock64-dockerfiles:arm64
+FROM ayufan/rock64-dockerfiles:arm64
 # FROM ayufan/rock64-dockerfiles:arm32
 # FROM arm64v8/debian:stretch
-FROM arm64v8/debian:stable-slim
+# FROM arm64v8/debian:stable-slim
 # FROM arm64v8/alpine:latest
 
 # set version label
@@ -31,11 +31,11 @@ EXPOSE 8080
 
 # Create directory for library
 RUN mkdir -p /opt/calibre/library
-VOLUME ["/opt/calibre/library“]
+VOLUME ["/opt/calibre/library"]
 
 # Create directory to import files
 RUN mkdir -p /opt/calibre/import
-VOLUME ["/opt/calibre/import“]
+VOLUME ["/opt/calibre/import"]
 
 # Add crontab job to import books in the library
 ADD crontab /etc/cron.d/calibre-update
