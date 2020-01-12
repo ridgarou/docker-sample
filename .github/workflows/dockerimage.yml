@@ -11,18 +11,17 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-      - name: Cache
-        uses: actions/cache@v1.1.0
-        with:
-          # A directory to store and save the cache
-          path: ${{ github.workspace }}/.docker-sample-cache
-          # An explicit key for restoring and saving the cache
-          key: ${{ runner.os }}-sample-cache
+      #- name: Cache
+      #  uses: actions/cache@v1.1.0
+      #  with:
+      #    # A directory to store and save the cache
+      #    path: ${{ github.workspace }}/.docker-sample-cache
+      #    # An explicit key for restoring and saving the cache
+      #    key: ${{ runner.os }}-sample-cache
       - name: Set up Docker Buildx
-        id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
-      - name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}        
+      #- name: Available platforms
+      #  run: echo ${{ steps.buildx.outputs.platforms }}        
       - name: Buildx the Docker image
         run: |
           flag=$(date +%s)
@@ -35,13 +34,12 @@ jobs:
           docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
-            --output "type=image,push=false" \
+            --output "type=image,push=true" \
             --tag ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
           docker image ls
-          echo "*** Publicamos la imagen"
-          docker push ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
+          #echo "*** Publicamos la imagen"
+          #docker push ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
         env:
-          ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
           DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_REGISTRY_URL: docker.pkg.github.com
