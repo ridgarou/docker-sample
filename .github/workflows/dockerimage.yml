@@ -23,7 +23,7 @@ jobs:
           echo "${ImageName}:${flag}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_USERNAME }}" --password-stdin
           #docker build . --file Dockerfile --tag "${ImageName}:${flag}"
-          docker buildx build . –no-cache \
+          docker buildx build . --no-cache \
             --platform linux/arm64 \
             --output "type=image,push=false" \
             --file Dockerfile \
