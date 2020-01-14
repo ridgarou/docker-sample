@@ -28,6 +28,7 @@ jobs:
           #  --tag "${DOCKER_IMAGE_NAME}:${flag}"
           cat /etc/docker/daemon.json
           docker build .  \
+            --config-file ./files/docker-daemon.json
             --file Dockerfile  \
             --platform linux/arm64 \
             --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
