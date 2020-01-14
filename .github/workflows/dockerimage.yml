@@ -30,14 +30,14 @@ jobs:
           echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
           #echo "*** Limpiamos la cache"
           #docker builder prune -af
-          echo "*** Construimos la imagen"
+          echo "*** Construimos la imagen ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}"
           docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
             --output "type=image,push=true" \
             --tag ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
           docker image ls
-          #echo "*** Publicamos la imagen"
+          #echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}"
           #docker push ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}
         env:
           DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
