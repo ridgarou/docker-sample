@@ -26,6 +26,7 @@ jobs:
           #  --output "type=image,push=false" \
           #  --tag "${DOCKER_IMAGE_NAME}:latest" \
           #  --tag "${DOCKER_IMAGE_NAME}:${flag}"
+          cat /etc/docker/daemon.json
           docker build .  \
             --file Dockerfile  \
             --platform linux/arm64 \
