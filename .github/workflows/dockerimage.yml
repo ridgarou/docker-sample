@@ -46,4 +46,4 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_IMAGE_NAME: ridgarou/docker-sample/docker-sample
+          DOCKER_IMAGE_NAME: ridgarou/docker-sample
