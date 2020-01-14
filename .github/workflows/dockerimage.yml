@@ -11,13 +11,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-      #- name: Cache
-      #  uses: actions/cache@v1.1.0
-      #  with:
-      #    # A directory to store and save the cache
-      #    path: ${{ github.workspace }}/.docker-sample-cache
-      #    # An explicit key for restoring and saving the cache
-      #    key: ${{ runner.os }}-sample-cache
       - name: Set up Docker Buildx
         uses: crazy-max/ghaction-docker-buildx@v1
       #- name: Available platforms
@@ -26,19 +19,22 @@ jobs:
         run: |
           flag=$(date +%s)
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
-          echo "*** Login en ${DOCKER_REGISTRY_URL}"
-          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
-          #echo "*** Limpiamos la cache"
-          #docker builder prune -af
           echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
-          docker buildx build . \
+          #docker buildx build . \
+          #  --platform linux/arm64 \
+          #  --file Dockerfile \
+          #  --output "type=image,push=false" \
+          #  --tag "${DOCKER_IMAGE_NAME}:latest" \
+          #  --tag "${DOCKER_IMAGE_NAME}:${flag}"
+          docker build .  \
+            --file Dockerfile  \
             --platform linux/arm64 \
-            --file Dockerfile \
-            --output "type=image,push=false" \
-            --tag "${DOCKER_IMAGE_NAME}:latest" \
-            --tag "${DOCKER_IMAGE_NAME}:${flag}"
+            --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
+            --tag "${DOCKER_IMAGE_NAME}:latest"
           docker tag "${DOCKER_IMAGE_NAME}:latest" "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
           docker image ls
+          echo "*** Login en ${DOCKER_REGISTRY_URL}"
+          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
           echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
           docker push "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
         env:
