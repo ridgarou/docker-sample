@@ -26,6 +26,7 @@ jobs:
         run: |
           flag=$(date +%s)
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}${DOCKER_IMAGE_NAME}:${flag}"
+          docker -v
           echo "*** Login en ${DOCKER_REGISTRY_URL}"
           echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
           #echo "*** Limpiamos la cache"
