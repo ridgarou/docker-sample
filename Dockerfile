@@ -49,4 +49,4 @@ RUN echo $TZ > /etc/timezone
 ## # Run cron job and start calibre server
 ## #CMD cron && /usr/bin/calibre-server --with-library=/opt/calibre/library
 
-CMD ["/bin/echo" , "Hi Docker !!!!"]
+CMD ["echo" , "Hi Docker !!!!"]
