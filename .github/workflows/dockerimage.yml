@@ -17,22 +17,33 @@ jobs:
         run: |
           flag=$(date +%s)
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
+          echo "*** Login en ${DOCKER_REGISTRY_URL}"
+          echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
           sudo docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
             --tag ${DOCKER_IMAGE_NAME}:latest \
             --tag ${DOCKER_IMAGE_NAME}:${flag} 
-            #--output "type=image,push=false"
-          sudo docker image ls
-          sudo docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}
-          sudo docker image ls
-          echo "*** Login en ${DOCKER_REGISTRY_URL}"
-          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
-          echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
-          sudo docker push "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
+            --output "type=image,push=true"
+          
+          #echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
+          #sudo docker buildx build . \
+          #  --platform linux/arm64 \
+          #  --file Dockerfile \
+          #  --tag ${DOCKER_IMAGE_NAME}:latest \
+          #  --tag ${DOCKER_IMAGE_NAME}:${flag} 
+          #  #--output "type=image,push=false"
+          #sudo docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}
+          #sudo docker image ls
+          #echo "*** Login en ${DOCKER_REGISTRY_URL}"
+          #echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
+          #echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
+          #sudo docker push "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
         env:
-          DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          #DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USERNAME: ridgarou
+          DOCKER_PASSWORD: Reaper01
           DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_IMAGE_NAME: docker-sample
+          DOCKER_IMAGE_NAME: ridgarou/docker-sample
