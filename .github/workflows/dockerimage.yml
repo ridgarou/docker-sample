@@ -23,10 +23,11 @@ jobs:
           sudo docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
-            --tag ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest \
-            --tag ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag} \
+            --tag ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest \
+            --tag ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag} \
             --output "type=image,push=false"
-          sudo docker push ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}
+          sudo docker tag ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+          sudo docker push ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
           #echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
           #sudo docker buildx build . \
           #  --platform linux/arm64 \
