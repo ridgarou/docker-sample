@@ -13,7 +13,7 @@ env:
   DOCKER_USERNAME: ridgarou
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   DOCKER_REGISTRY_URL: docker.io
-  DOCKER_IMAGE_NAME: docker-sample
+  DOCKER_IMAGE_NAME: ridgarou/docker-sample
 
   PLATFORM: linux/arm64
   DOCKER_CACHE_TAG: _cache
