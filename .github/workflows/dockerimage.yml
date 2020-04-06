@@ -13,11 +13,10 @@ env:
   DOCKER_USERNAME: ridgarou
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   DOCKER_REGISTRY_URL: docker.io
-  DOCKER_IMAGE_NAME: ridgarou/docker-sample
+  DOCKER_IMAGE_NAME: ${{ env.DOCKER_USERNAME }}/docker-sample
 
   PLATFORM: linux/arm64
   DOCKER_CACHE_TAG: _cache
-  DOCKER_REPO: renovate/renovate
   CACHE_VERSION: v2
   BUILDX_VERSION: v0.3.1
 
@@ -39,31 +38,12 @@ jobs:
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
           
           echo "*** Login de ${{ env.DOCKER_USERNAME }} en ${{ env.DOCKER_REGISTRY_URL }}"
-          #echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
           echo "${{ env.DOCKER_PASSWORD }}" | docker login ${{ env.DOCKER_REGISTRY_URL }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
           
           echo "*** Construimos la imagen ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest"
           sudo docker buildx build . \
-            --platform linux/arm64 \
+            --platform ${{ env.PLATFORM }} \
             --file Dockerfile \
             --tag ${{ env.DOCKER_IMAGE_NAME }}:latest \
             --tag ${{ env.DOCKER_IMAGE_NAME }}:${flag} \
             --output=type=registry
-
-          #  --output "type=image,push=true"
-             
-          #sudo docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
-          #sudo docker push ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
-          #echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
-          #sudo docker buildx build . \
-          #  --platform linux/arm64 \
-          #  --file Dockerfile \
-          #  --tag ${DOCKER_IMAGE_NAME}:latest \
-          #  --tag ${DOCKER_IMAGE_NAME}:${flag} 
-          #  #--output "type=image,push=false"
-          #sudo docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}
-          #sudo docker image ls
-          #echo "*** Login en ${DOCKER_REGISTRY_URL}"
-          #echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
-          #echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
-          #sudo docker push "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
