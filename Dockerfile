@@ -49,4 +49,4 @@ RUN echo $TZ > /etc/timezone
 ## # Run cron job and start calibre server
 ## #CMD cron && /usr/bin/calibre-server --with-library=/opt/calibre/library
 
-## CMD  echo "Hello world"
+## CMD  echo "Hello world" 
