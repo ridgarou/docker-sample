@@ -4,29 +4,50 @@ on:
   pull_request:
     branches:
     - master
+env:
+  DOCKER_USERNAME: ${{ github.actor }} #${{ secrets.GITHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  DOCKER_REGISTRY_URL: docker.pkg.github.com
+  
+  #DOCKER_USERNAME: ridgarou
+  #DOCKER_PASSWORD: Reaper01
+  #DOCKER_REGISTRY_URL: docker.io
+
+  DOCKER_IMAGE_NAME: ${{ github.repository }} #docker-sample
+
+  PLATFORM: linux/arm64
+  DOCKER_CACHE_TAG: _cache
+  DOCKER_REPO: renovate/renovate
+  CACHE_VERSION: v2
+  BUILDX_VERSION: v0.3.1
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Docker Buildx ${{ env.BUILDX_VERSION }}
+        uses: crazy-max/ghaction-docker-buildx@v2
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+
       - name: Checkout Code
-        uses: actions/checkout@v1
-      - name: Set up Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v1       
+        uses: actions/checkout@v2
+        
       - name: Buildx the Docker image
         run: |
           flag=$(date +%s)
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
           
-          echo "*** Login en ${DOCKER_REGISTRY_URL}"
-          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
+          echo "*** Login de ${{ env.DOCKER_USERNAME }} en ${{ env.DOCKER_REGISTRY_URL }}"
+          #echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
+          echo "${{ env.DOCKER_PASSWORD }}" | docker login ${{ env.DOCKER_REGISTRY_URL }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
           
           echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
           sudo docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
-            --tag ${DOCKER_IMAGE_NAME}:latest \
-            --tag ${DOCKER_IMAGE_NAME}:${flag} \
+            --tag ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest \
+            --tag ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:${flag} \
             --output=type=registry
 
           #  --output "type=image,push=true"
@@ -46,11 +67,3 @@ jobs:
           #echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
           #echo "*** Publicamos la imagen ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
           #sudo docker push "${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
-        env:
-          #DOCKER_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          #DOCKER_REGISTRY_URL: docker.pkg.github.com:  
-          DOCKER_USERNAME: ridgarou
-          DOCKER_PASSWORD: Reaper01
-          DOCKER_REGISTRY_URL: docker.io
-          DOCKER_IMAGE_NAME: docker-sample
