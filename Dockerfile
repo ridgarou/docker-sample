@@ -1,8 +1,9 @@
-FROM --platform=${TARGETPLATFORM:-linux/arm64} ayufan/rock64-dockerfiles
+#FROM --platform=${TARGETPLATFORM:-linux/arm64} ayufan/rock64-dockerfiles
+#ARG TARGETPLATFORM
+#ARG BUILDPLATFORM
+#RUN printf "I am running on ${BUILDPLATFORM:-linux/amd64}, building for ${TARGETPLATFORM:-linux/amd64}\n$(uname -a)\n"
 
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-RUN printf "I am running on ${BUILDPLATFORM:-linux/amd64}, building for ${TARGETPLATFORM:-linux/amd64}\n$(uname -a)\n"
+FROM ayufan/rock64-dockerfiles:arm64
 
 # FROM ayufan/rock64-dockerfiles:arm64
 # FROM ayufan/rock64-dockerfiles:arm32
