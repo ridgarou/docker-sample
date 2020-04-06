@@ -5,15 +5,15 @@ on:
     branches:
     - master
 env:
-  DOCKER_USERNAME: ${{ github.actor }} #${{ secrets.GITHUB_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  DOCKER_REGISTRY_URL: docker.pkg.github.com
-  
-  #DOCKER_USERNAME: ridgarou
-  #DOCKER_PASSWORD: Reaper01
-  #DOCKER_REGISTRY_URL: docker.io
+  #DOCKER_USERNAME: ${{ github.actor }} #${{ secrets.GITHUB_USERNAME }}
+  #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  #DOCKER_REGISTRY_URL: docker.pkg.github.com
+  # DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
 
-  DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
+  DOCKER_USERNAME: ridgarou
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_REGISTRY_URL: docker.io
+  DOCKER_IMAGE_NAME: docker-sample
 
   PLATFORM: linux/arm64
   DOCKER_CACHE_TAG: _cache
@@ -46,8 +46,8 @@ jobs:
           sudo docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
-            --tag ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest \
-            --tag ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:${flag} \
+            --tag ${{ env.DOCKER_IMAGE_NAME }}:latest \
+            --tag ${{ env.DOCKER_IMAGE_NAME }}:${flag} \
             --output=type=registry
 
           #  --output "type=image,push=true"
