@@ -4,18 +4,47 @@ on:
   pull_request:
     branches:
     - master
+env:
+  #DOCKER_USERNAME: ${{ github.actor }} #${{ secrets.GITHUB_USERNAME }}
+  #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  #DOCKER_REGISTRY_URL: docker.pkg.github.com
+  #DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
+
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_REGISTRY_URL: docker.io
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/docker-sample
+
+  PLATFORM: linux/arm64
+  DOCKER_CACHE_TAG: _cache
+  CACHE_VERSION: v2
+  BUILDX_VERSION: v0.3.1
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Build the Docker image
+      - name: Set up Docker Buildx ${{ env.BUILDX_VERSION }}
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Buildx the Docker image
         run: |
           flag=$(date +%s)
-          echo "${ImageName}:${flag}"
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ secrets.GITHUB_USERNAME }}" --password-stdin
-          docker build . --file Dockerfile --tag "${ImageName}:${flag}"
-          docker push "${ImageName}:${flag}"
-        env:
-          ImageName: docker.pkg.github.com/ridgarou/docker-sample/docker-sample
+          echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
+          
+          echo "*** Login de ${{ env.DOCKER_USERNAME }} en ${{ env.DOCKER_REGISTRY_URL }}"
+          echo "${{ env.DOCKER_PASSWORD }}" | docker login ${{ env.DOCKER_REGISTRY_URL }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
+          
+          echo "*** Construimos la imagen ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest"
+          sudo docker buildx build . \
+            --platform ${{ env.PLATFORM }} \
+            --file Dockerfile \
+            --cache-to=type=inline \
+            --tag ${{ env.DOCKER_IMAGE_NAME }}:latest \
+            --tag ${{ env.DOCKER_IMAGE_NAME }}:${flag} \
+            --output=type=registry
