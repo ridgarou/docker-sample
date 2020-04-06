@@ -10,10 +10,10 @@ env:
   #DOCKER_REGISTRY_URL: docker.pkg.github.com
   #DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
 
-  DOCKER_USERNAME: ridgarou
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   DOCKER_REGISTRY_URL: docker.io
-  DOCKER_IMAGE_NAME: ${{ DOCKER_USERNAME }}/docker-sample
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/docker-sample
 
   PLATFORM: linux/arm64
   DOCKER_CACHE_TAG: _cache
