@@ -8,7 +8,7 @@ env:
   #DOCKER_USERNAME: ${{ github.actor }} #${{ secrets.GITHUB_USERNAME }}
   #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   #DOCKER_REGISTRY_URL: docker.pkg.github.com
-  # DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
+  #DOCKER_IMAGE_NAME: ${{ github.repository }}/docker-sample
 
   DOCKER_USERNAME: ridgarou
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -44,6 +44,7 @@ jobs:
           sudo docker buildx build . \
             --platform ${{ env.PLATFORM }} \
             --file Dockerfile \
+            --cache-to=type=inline \
             --tag ${{ env.DOCKER_IMAGE_NAME }}:latest \
             --tag ${{ env.DOCKER_IMAGE_NAME }}:${flag} \
             --output=type=registry
