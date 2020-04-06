@@ -17,15 +17,20 @@ jobs:
         run: |
           flag=$(date +%s)
           echo "*** Imagen a crear ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${flag}"
+          
           echo "*** Login en ${DOCKER_REGISTRY_URL}"
           echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY_URL} -u "${DOCKER_USERNAME}" --password-stdin
+          
           echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
           sudo docker buildx build . \
             --platform linux/arm64 \
             --file Dockerfile \
             --tag ${DOCKER_IMAGE_NAME}:latest \
             --tag ${DOCKER_IMAGE_NAME}:${flag} \
-            --output "type=image,push=true"
+            --output=type=registry
+
+          #  --output "type=image,push=true"
+             
           #sudo docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
           #sudo docker push ${DOCKER_REGISTRY_URL}/${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
           #echo "*** Construimos la imagen ${DOCKER_IMAGE_NAME}:latest"
